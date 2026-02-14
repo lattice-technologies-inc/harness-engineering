@@ -59,18 +59,19 @@ if grep -nF "[One-liner description — fill per project]" AGENTS.md >/dev/null 
 fi
 
 # Plan files must include a date (YYYY-MM-DD) in filename or heading.
+# Check both active plans and completed plans.
 plan_files_without_date=()
-for plan in "$BASE_DIR"/plans/*.md; do
-  [[ -f "$plan" ]] || continue
-  basename_plan=$(basename "$plan")
-  # Skip index-like files.
-  [[ "$basename_plan" == "index.md" ]] && continue
-  # Check filename or first 5 lines for a date pattern.
-  if ! echo "$basename_plan" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
-    if ! head -n 5 "$plan" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
-      plan_files_without_date+=("$basename_plan")
+for plan_dir in "$BASE_DIR"/plans "$BASE_DIR"/plans/complete; do
+  for plan in "$plan_dir"/*.md; do
+    [[ -f "$plan" ]] || continue
+    basename_plan=$(basename "$plan")
+    [[ "$basename_plan" == "index.md" ]] && continue
+    if ! echo "$basename_plan" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
+      if ! head -n 5 "$plan" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
+        plan_files_without_date+=("$plan")
+      fi
     fi
-  fi
+  done
 done
 if [[ ${#plan_files_without_date[@]} -gt 0 ]]; then
   for p in "${plan_files_without_date[@]}"; do
