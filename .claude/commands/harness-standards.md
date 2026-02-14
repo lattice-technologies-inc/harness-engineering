@@ -4,7 +4,7 @@ Goal: replace placeholders with repo-specific standards and guardrails so agents
 
 ---
 
-## PHASE 1: Analyze Current Repository
+## PHASE 1: Analyze Current Repository (Silent — no user interaction yet)
 
 Before asking the user anything, gather real signals from the repo.
 
@@ -65,30 +65,24 @@ If not available, proceed with general knowledge + codebase analysis.
 
 ---
 
-## PHASE 2: Present Findings & Confirm with User
+## PHASE 2: Present Findings & Ask User to Clarify
 
-Present a summary of what was detected and propose standards. Ask the user ONE tight set of questions:
+**IMPORTANT**: Use the `AskUserQuestion` tool here. Do NOT just print questions as text — the tool gives the user structured options and ensures real answers.
 
-```
-I analyzed the repo. Here's what I found:
+First, present a brief summary of what was detected (as regular text output). Then immediately use `AskUserQuestion` to get the critical inputs that can't be inferred from code:
 
-**Stack**: [detected languages/frameworks]
-**CI**: [what runs, what blocks merges]
-**Domains**: [candidate list]
-**Tests**: [pattern detected or none]
-**Gaps**: [which docs are still placeholder]
+### Question set (use AskUserQuestion with these):
 
-I'd like to fill in the standards. A few questions:
+1. **One-liner**: "What does this project do in one sentence?" — Offer the inferred description from README as the first option.
+2. **Primary users**: "Who are the primary users?" — Options: Developers, End users, Internal team, Other.
+3. **Merge philosophy**: "What blocks a merge?" — Options: "Tests + lint must pass", "Tests + lint + review", "Fast and loose (fix forward)", Other.
+4. **Security sensitivity**: "What's the security posture?" — Options: "Handles user data/PII", "Internal tool (low sensitivity)", "Public API (high sensitivity)", Other.
 
-1. **One-liner**: What does this project do? (I suggest: "[inferred from README]")
-2. **Primary users**: Who uses this? (developers, end-users, internal team?)
-3. **Quality gates**: What must ALWAYS hold? (I detected these from CI: [list])
-   - Anything to add or change?
-4. **Merge philosophy**: What blocks a merge vs what can be fixed post-merge?
-5. **Security boundaries**: Any auth/secrets/data classification I should know about?
-```
+If the user's answers are terse or they pick "Other" with custom text, that's fine — fill in the rest from analysis.
 
-If the user gives terse answers, that's fine — fill in the rest from analysis.
+### If answers are ambiguous
+
+Use `AskUserQuestion` again for a focused follow-up. Do NOT guess on things that could lead to incorrect standards (e.g., security boundaries, auth strategy).
 
 ---
 
@@ -149,13 +143,13 @@ Summarize what was updated:
 
 ```
 Standards filled:
-- ✅ AGENTS.md — one-liner set
-- ✅ ARCHITECTURE.md — N domains mapped
-- ✅ PRODUCT_SENSE.md — users, problem, metrics
-- ✅ RELIABILITY.md — expectations set
-- ✅ SECURITY.md — boundaries documented
-- ✅ golden-principles.md — N rules, stack-specific
-- ✅ quality-score.md — baseline grades
+- AGENTS.md — one-liner set
+- ARCHITECTURE.md — N domains mapped
+- PRODUCT_SENSE.md — users, problem, metrics
+- RELIABILITY.md — expectations set
+- SECURITY.md — boundaries documented
+- golden-principles.md — N rules, stack-specific
+- quality-score.md — baseline grades
 
 Research used:
 - Codebase analysis: Yes
@@ -164,6 +158,5 @@ Research used:
 
 Suggested next steps:
 - Review the filled docs and adjust anything that's off
-- Wire `scripts/harness/knowledge-check.sh` into CI
 - Consider adding mechanical enforcement (`/harness-eslint` for JS/TS repos)
 ```
