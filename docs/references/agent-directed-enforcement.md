@@ -47,13 +47,45 @@ bash scripts/harness/knowledge-check.sh
 
 It checks that the agent knowledge base exists and stays small/legible.
 
+## Lint Rule Categories (From Factory's Linting Article)
+
+The Factory team published a companion article on using linters to direct agents. Their taxonomy of agent-focused lint categories:
+
+| Category | What It Enforces | Our Rules |
+|----------|-----------------|-----------|
+| **Grep-ability** | Named exports, consistent error types, explicit DTOs | `no-default-export`, `filename-match-export` |
+| **Glob-ability** | Predictable file structure, deterministic placement | `max-file-lines` |
+| **Architectural boundaries** | Cross-layer import prevention, domain boundaries | *(project-specific — add per repo)* |
+| **Security & privacy** | Block eval, require input validation, no secrets | `no-eval` |
+| **Testability** | Colocated tests, no network in unit tests | *(add per repo)* |
+| **Observability** | Structured logging, error metadata, telemetry naming | `no-console-log`, `structured-logging` |
+| **Documentation signals** | Module-level docstrings, public API docs | *(add per repo)* |
+
+Key insight: "If you adopt only one category, adopt grep-ability." Named exports + deterministic file placement let agents `ripgrep` for definitions and predict file locations.
+
+## The Lint Development Cycle
+
+1. **Observe drift** — spot a recurring anti-pattern in review
+2. **Codify the rule** — write an ESLint rule with agent-readable remediation
+3. **Surface violations** — run across the repo, triage by risk
+4. **Remediate at scale** — spawn agents to apply fixes in batches
+5. **Prevent regressions** — wire into CI, pre-commit, agent toolchains
+
+## AGENTS.md + Linters: Complementary, Not Redundant
+
+- **AGENTS.md** = the "why" and the examples. Maps each guideline to rules and docs.
+- **Linters** = the "how" and the guarantee. Blocks violations, provides machine feedback.
+
+Guidance alone has failure modes: ambiguity, no enforcement, limited cross-file reach. Linters turn intent into a compiler-like contract.
+
 ## Next Step: Project-Specific Enforcement
 
 Once the stack is real (JS/TS, Python, Ruby, etc.), add the *next* enforcement layer:
 - language lints/formatters
-- architecture boundary checks
-- "tests required" policies
+- architecture boundary checks (cross-layer import prevention)
+- "tests required" policies (colocated test enforcement)
 - reliability budgets for critical paths
+- migration-driven linting (encode "new way" as rules, autofix "old way")
 
 Keep the goal tight: reduce whole classes of agent mistakes.
 

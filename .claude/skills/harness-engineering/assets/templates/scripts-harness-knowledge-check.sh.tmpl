@@ -58,6 +58,26 @@ if grep -nF "[One-liner description — fill per project]" AGENTS.md >/dev/null 
   warn "AGENTS.md still contains the one-liner placeholder. Fill it in (agents treat missing context as missing reality)."
 fi
 
+# Plan files must include a date (YYYY-MM-DD) in filename or heading.
+plan_files_without_date=()
+for plan in "$BASE_DIR"/plans/*.md; do
+  [[ -f "$plan" ]] || continue
+  basename_plan=$(basename "$plan")
+  # Skip index-like files.
+  [[ "$basename_plan" == "index.md" ]] && continue
+  # Check filename or first 5 lines for a date pattern.
+  if ! echo "$basename_plan" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
+    if ! head -n 5 "$plan" | grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}'; then
+      plan_files_without_date+=("$basename_plan")
+    fi
+  fi
+done
+if [[ ${#plan_files_without_date[@]} -gt 0 ]]; then
+  for p in "${plan_files_without_date[@]}"; do
+    warn "Plan '$p' has no date (YYYY-MM-DD) in filename or heading. Plans must be dated for traceability."
+  done
+fi
+
 if [[ -f ".claude/settings.json" ]]; then
   # Soft check: helpful remediation, but not all repos use this.
   if ! sed -nE 's/.*"planDirectory"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' .claude/settings.json | head -n 1 | grep -qE "^${BASE_DIR}/plans$"; then

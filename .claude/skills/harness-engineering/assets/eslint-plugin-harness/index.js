@@ -9,6 +9,8 @@
 module.exports = {
   rules: {
     "no-console-log": require("./rules/no-console-log"),
+    "no-default-export": require("./rules/no-default-export"),
+    "no-eval": require("./rules/no-eval"),
     "filename-match-export": require("./rules/filename-match-export"),
     "structured-logging": require("./rules/structured-logging"),
     "max-file-lines": require("./rules/max-file-lines"),
@@ -18,6 +20,7 @@ module.exports = {
       plugins: ["harness"],
       rules: {
         "harness/no-console-log": "error",
+        "harness/no-eval": "error",
         "harness/structured-logging": "error",
         "harness/max-file-lines": ["warn", { max: 500 }],
       },
@@ -26,6 +29,8 @@ module.exports = {
       plugins: ["harness"],
       rules: {
         "harness/no-console-log": "error",
+        "harness/no-default-export": "warn",
+        "harness/no-eval": "error",
         "harness/filename-match-export": "warn",
         "harness/structured-logging": "error",
         "harness/max-file-lines": ["error", { max: 500 }],

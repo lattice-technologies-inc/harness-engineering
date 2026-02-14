@@ -76,6 +76,12 @@ module.exports = [
       // Agent steering: prefer structured logging; no committed console.log.
       "harness/no-console-log": "error",
 
+      // Grep-ability: named exports only (agents can ripgrep for definitions).
+      "harness/no-default-export": "warn",
+
+      // Security: block eval() and new Function().
+      "harness/no-eval": "error",
+
       // Enforce structured logging (static message + metadata object).
       "harness/structured-logging": "error",
 
@@ -95,6 +101,8 @@ module.exports = [
           plugins: { harness },
           rules: {
             "harness/no-console-log": "error",
+            "harness/no-default-export": "warn",
+            "harness/no-eval": "error",
             "harness/structured-logging": "error",
             "harness/max-file-lines": ["warn", { max: 500 }],
           },

@@ -207,24 +207,61 @@ The generated templates encode these agent-first principles:
 9. **Tests prove behavior** — not implementation
 10. **Docs ship with code** — same commit
 
-## Agent Capabilities (Post-Bootstrap)
+## Recommended Skills & Tools (Post-Bootstrap)
 
-After bootstrapping, the following capabilities enhance agent-first development. These reference existing tools — install as needed:
+After bootstrapping, install these tools to unlock the full agent-first development loop. The audit script (`audit.sh`) checks for their presence on PATH.
 
-### Browser Validation
-Drive the app with Chrome DevTools for visual QA. Use `agent-browser` (headless) or `playwriter` (user's Chrome). Enables: screenshot validation, DOM inspection, user flow testing.
+### Required
 
-### Doc Gardening
-Recurring scan for stale docs that don't match code behavior. Pattern: agent reads code → compares to docs → opens fix-up PRs for drift.
+| Tool | Purpose | Install |
+|------|---------|---------|
+| `gh` | GitHub CLI — PRs, issues, CI checks | `brew install gh` |
 
-### Quality Sweeps
-Background task scanning for golden principle violations. Updates quality scores in `<base-dir>/quality-score.md`. Opens targeted refactoring PRs.
+### Recommended
 
-### Plan Lifecycle
-Manage plans as first-class artifacts:
+| Tool | Purpose | Install |
+|------|---------|---------|
+| `agent-browser` | Headless browser automation — screenshot validation, DOM inspection, user flow testing | `npm i -g agent-browser && agent-browser install` |
+| `playwriter` | Control user's Chrome via extension — authenticated flows, debugging | Load skill: `/playwriter` |
+| `peekaboo` | macOS screenshot/click automation — visual QA | `brew install steipete/tap/peekaboo` |
+
+### Recommended Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `harness-engineering` | This skill — bootstrap + onboard + standards |
+| `git-worktree` | Isolated parallel development — one worktree per task |
+| `compound-engineering:agent-browser` | Browser automation skill (load with `/compound-engineering:agent-browser`) |
+
+### Agent Capabilities
+
+These patterns are enabled by the tools above:
+
+**Browser Validation**: Drive the app with Chrome DevTools for visual QA. Use `agent-browser` (headless) or `playwriter` (user's Chrome). Enables: screenshot validation, DOM inspection, user flow testing.
+
+**Doc Gardening**: Recurring scan for stale docs that don't match code behavior. Pattern: agent reads code → compares to docs → opens fix-up PRs for drift.
+
+**Quality Sweeps**: Background task scanning for golden principle violations. Updates quality scores in `<base-dir>/quality-score.md`. Opens targeted refactoring PRs.
+
+**Plan Lifecycle**: Manage plans as first-class artifacts:
 - Create in `<base-dir>/plans/`
 - Track status in `<base-dir>/PLANS.md`
 - Move to `<base-dir>/plans/complete/` when done
+
+## ESLint Plugin Rules
+
+The bundled `eslint-plugin-harness` ships these rules, mapped to the article's lint categories:
+
+| Rule | Category | Severity | Description |
+|------|----------|----------|-------------|
+| `no-console-log` | Observability | error | No committed console.log |
+| `no-default-export` | Grep-ability | warn | Named exports only — highest leverage for agents |
+| `no-eval` | Security | error | Block eval() and new Function() |
+| `filename-match-export` | Grep-ability | warn | Filename matches single named export |
+| `structured-logging` | Observability | error | Static message + metadata object |
+| `max-file-lines` | Glob-ability | warn | Keep files < 500 LOC |
+
+See `assets/eslint-plugin-harness/rules/<rule>/README.md` for per-rule docs with rationale and examples.
 
 ## Resources
 
@@ -232,7 +269,8 @@ Manage plans as first-class artifacts:
 Shell script that creates the full directory structure and generates all files from templates. Accepts `--target`, `--name`, `--description`, `--base-dir`, `--stack`, `--domains` flags. Idempotent.
 
 ### assets/templates/
-14 template files with `{{PLACEHOLDER}}` markers: `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`, `{{BASE_DIR}}`, `{{STACK}}`, `{{DOMAINS}}`, `{{DATE}}`. The bootstrap script handles substitution.
+15 template files with `{{PLACEHOLDER}}` markers: `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`, `{{BASE_DIR}}`, `{{STACK}}`, `{{DOMAINS}}`, `{{DATE}}`. The bootstrap script handles substitution.
 
 ### references/
-- `harness-engineering-article.md` — key insights extracted from the source article
+- `harness-engineering-article.md` — key insights from the OpenAI harness engineering article
+- `agent-directed-enforcement.md` — lint categories, Factory article insights, lint development cycle
