@@ -155,6 +155,20 @@ else
   ci_summary=$(printf "%s\n" "${ci_signals[@]}" | awk '{printf "- %s\n", $0}')
 fi
 
+# Agent tooling detection.
+agent_tools=()
+command -v agent-browser >/dev/null 2>&1 && agent_tools+=("agent-browser (headless browser automation)")
+command -v playwriter >/dev/null 2>&1 && agent_tools+=("playwriter (user Chrome control)")
+command -v peekaboo >/dev/null 2>&1 && agent_tools+=("peekaboo (macOS screenshot/click)")
+command -v oracle >/dev/null 2>&1 || command -v oracle-browser >/dev/null 2>&1 && agent_tools+=("oracle (second-opinion from another model)")
+command -v gh >/dev/null 2>&1 && agent_tools+=("gh (GitHub CLI)")
+
+if [[ ${#agent_tools[@]} -eq 0 ]]; then
+  agent_tools_summary="- (none detected)"
+else
+  agent_tools_summary=$(printf "%s\n" "${agent_tools[@]}" | awk '{printf "- %s\n", $0}')
+fi
+
 candidate_domains=$(
   # Prefer domain-y directories; this is intentionally heuristic.
   for root in src app apps packages services lib server backend frontend; do
@@ -210,6 +224,10 @@ ${ext_counts}
 
 ${ci_summary}
 
+## Agent Tooling (Available on PATH)
+
+${agent_tools_summary}
+
 ## Candidate Domains (Heuristic)
 
 ${candidate_domains}
@@ -243,6 +261,9 @@ report_md+=$(
    - At minimum: CI checks for docs drift + file size policy + logging policy.
    - For JS/TS repos: consider ESLint rules as agent-readable remediation.
 5. Create an onboarding plan and execute it; avoid ad-hoc "fix as we go".
+6. Install missing agent tooling (see "Agent Tooling" above):
+   - \`agent-browser\`: headless browser automation for UI validation (\`npm i -g agent-browser && agent-browser install\`)
+   - \`gh\`: GitHub CLI for PR/issue management (\`brew install gh\`)
 
 EOF
 )
