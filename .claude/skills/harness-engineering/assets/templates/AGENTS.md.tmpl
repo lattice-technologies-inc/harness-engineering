@@ -9,22 +9,22 @@
 | Question | Go to |
 |----------|-------|
 | Architecture / domain map | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| Design decisions & rationale | [docs/design-docs/](docs/design-docs/index.md) |
-| Active plans | [docs/plans/](docs/plans/) |
-| Completed plans | [docs/plans/complete/](docs/plans/complete/) |
-| Plans index | [docs/PLANS.md](docs/PLANS.md) |
-| Product specs & requirements | [docs/product-specs/](docs/product-specs/index.md) |
-| Product sense & user context | [docs/PRODUCT_SENSE.md](docs/PRODUCT_SENSE.md) |
-| Design system & patterns | [docs/DESIGN.md](docs/DESIGN.md) |
-| Golden principles (mechanical rules) | [docs/golden-principles.md](docs/golden-principles.md) |
-| Quality scores per domain | [docs/quality-score.md](docs/quality-score.md) |
-| Tech debt register | [docs/tech-debt-tracker.md](docs/tech-debt-tracker.md) |
-| Reliability requirements | [docs/RELIABILITY.md](docs/RELIABILITY.md) |
-| Security guidelines | [docs/SECURITY.md](docs/SECURITY.md) |
-| External references & llms.txt | [docs/references/](docs/references/) |
-| Auto-generated docs | [docs/generated/](docs/generated/) |
-| Core beliefs (agent-first principles) | [docs/design-docs/core-beliefs.md](docs/design-docs/core-beliefs.md) |
-| Exec plans | [docs/exec-plans/](docs/exec-plans/) |
+| Design decisions & rationale | [{{BASE_DIR}}/design-docs/]({{BASE_DIR}}/design-docs/index.md) |
+| Active plans | [{{BASE_DIR}}/plans/]({{BASE_DIR}}/plans/) |
+| Completed plans | [{{BASE_DIR}}/plans/complete/]({{BASE_DIR}}/plans/complete/) |
+| Plans index | [{{BASE_DIR}}/PLANS.md]({{BASE_DIR}}/PLANS.md) |
+| Product specs & requirements | [{{BASE_DIR}}/product-specs/]({{BASE_DIR}}/product-specs/index.md) |
+| Product sense & user context | [{{BASE_DIR}}/PRODUCT_SENSE.md]({{BASE_DIR}}/PRODUCT_SENSE.md) |
+| Design system & patterns | [{{BASE_DIR}}/DESIGN.md]({{BASE_DIR}}/DESIGN.md) |
+| Golden principles (mechanical rules) | [{{BASE_DIR}}/golden-principles.md]({{BASE_DIR}}/golden-principles.md) |
+| Quality scores per domain | [{{BASE_DIR}}/quality-score.md]({{BASE_DIR}}/quality-score.md) |
+| Tech debt register | [{{BASE_DIR}}/tech-debt-tracker.md]({{BASE_DIR}}/tech-debt-tracker.md) |
+| Reliability requirements | [{{BASE_DIR}}/RELIABILITY.md]({{BASE_DIR}}/RELIABILITY.md) |
+| Security guidelines | [{{BASE_DIR}}/SECURITY.md]({{BASE_DIR}}/SECURITY.md) |
+| External references & llms.txt | [{{BASE_DIR}}/references/]({{BASE_DIR}}/references/) |
+| Auto-generated docs | [{{BASE_DIR}}/generated/]({{BASE_DIR}}/generated/) |
+| Core beliefs (agent-first principles) | [{{BASE_DIR}}/design-docs/core-beliefs.md]({{BASE_DIR}}/design-docs/core-beliefs.md) |
+| Exec plans | [{{BASE_DIR}}/exec-plans/]({{BASE_DIR}}/exec-plans/) |
 
 ---
 
@@ -33,14 +33,14 @@
 ### Before Coding
 
 1. **Read docs first.** Start with this file, then follow pointers relevant to your task.
-2. **Check plans.** Look in `docs/plans/` for active plans. Don't duplicate work.
-3. **Check tech debt.** Consult `docs/tech-debt-tracker.md` — your change might address (or worsen) known debt.
+2. **Check plans.** Look in `{{BASE_DIR}}/plans/` for active plans. Don't duplicate work.
+3. **Check tech debt.** Consult `{{BASE_DIR}}/tech-debt-tracker.md` — your change might address (or worsen) known debt.
 
 ### Planning
 
-4. **Plans are first-class artifacts.** Create a plan in `docs/plans/` before multi-step work.
-5. **Move completed plans** to `docs/plans/complete/` when fully implemented.
-6. **Exec plans** go in `docs/exec-plans/` for time-sensitive operational work.
+4. **Plans are first-class artifacts.** Create a plan in `{{BASE_DIR}}/plans/` before multi-step work.
+5. **Move completed plans** to `{{BASE_DIR}}/plans/complete/` when fully implemented.
+6. **Exec plans** go in `{{BASE_DIR}}/exec-plans/` for time-sensitive operational work.
 
 ### Building
 
@@ -53,9 +53,9 @@
 ### After Coding
 
 12. **Update docs when behavior changes.** No shipping without doc updates.
-13. **Quality score must not regress.** Check `docs/quality-score.md`.
+13. **Quality score must not regress.** Check `{{BASE_DIR}}/quality-score.md`.
 14. **Track new tech debt.** If you introduce debt knowingly, add it to the tracker.
-15. **No knowledge lives outside the repo.** Encode Slack conversations, meeting notes, and verbal decisions into `docs/`.
+15. **No knowledge lives outside the repo.** Encode Slack conversations, meeting notes, and verbal decisions into `{{BASE_DIR}}/`.
 
 ---
 
@@ -63,6 +63,6 @@
 
 - **Conventional Commits**: `feat|fix|refactor|build|ci|chore|docs|style|perf|test`
 - **File limit**: ~500 LOC
-- **Plans dir**: `docs/plans/` (active) / `docs/plans/complete/` (done)
-- **Design docs**: `docs/design-docs/`
-- **Product specs**: `docs/product-specs/`
+- **Plans dir**: `{{BASE_DIR}}/plans/` (active) / `{{BASE_DIR}}/plans/complete/` (done)
+- **Design docs**: `{{BASE_DIR}}/design-docs/`
+- **Product specs**: `{{BASE_DIR}}/product-specs/`

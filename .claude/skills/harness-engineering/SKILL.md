@@ -1,15 +1,15 @@
 ---
 name: harness-engineering
-description: "Bootstrap an agent-first knowledge base in any repository. This skill should be used when initializing a new project with structured docs, AGENTS.md, CLAUDE.md, and the full knowledge scaffold for agent-driven development. Invoke via /harness-init."
+description: "Bootstrap an agent-first knowledge base in any repository. This skill should be used when initializing a new project or adding structured knowledge scaffolding to an existing repo. Supports configurable base directory, new/existing repos, Claude settings with plan directory, and bundled agent capabilities. Invoke via /harness-init."
 ---
 
 # Harness Engineering — Agent-First Knowledge Base Bootstrap
 
 ## Overview
 
-Bootstrap a universal, stack-agnostic knowledge base structure optimized for agent-first development. Creates AGENTS.md as a table of contents (not an encyclopedia), with all deep knowledge living in structured `docs/` files — mechanically discoverable, progressively disclosed.
+Bootstrap a universal, stack-agnostic knowledge base optimized for agent-first development. Creates AGENTS.md as a table of contents (not an encyclopedia), with deep knowledge in structured docs, mechanically discoverable, progressively disclosed.
 
-Based on the system that produced ~1M LOC across 1,500 PRs with zero manually-written code.
+Based on the system that produced ~1M LOC across 1,500 PRs with zero manually-written code. See `references/harness-engineering-article.md` for the full source material.
 
 ## When to Use
 
@@ -19,89 +19,100 @@ Based on the system that produced ~1M LOC across 1,500 PRs with zero manually-wr
 
 ## Workflow
 
-### Step 1: Pre-flight Check
+### Step 1: Detect Repo State
 
-Check if the target repo already has the structure. The skill is idempotent — skip files that already exist, only create missing ones.
+Determine whether the target is a new or existing repository:
 
 ```
-Check for existence of:
-- AGENTS.md
-- CLAUDE.md
-- ARCHITECTURE.md
-- docs/ directory and subdirectories
+Check:
+1. Does .git/ exist? → existing repo
+2. Does AGENTS.md exist? → already bootstrapped (report + exit unless --force)
+3. Does the default docs/ directory have existing content? → potential conflict
 ```
 
-If all files exist, report "Knowledge base already bootstrapped" and exit.
+### Step 2: Choose Base Directory
 
-### Step 2: Gather Project Context
+The knowledge base defaults to `docs/` but is configurable.
 
-Ask the user for project-specific details to customize the scaffold:
+**If `docs/` already has significant content** (>5 non-generated files), surface to user:
+
+> "`docs/` already contains files. Options:"
+> 1. Use `docs/` anyway (merge alongside existing content)
+> 2. Use `knowledge/` instead
+> 3. Use a custom path
+> 4. Cancel
+
+All generated files, templates, and path references adapt to the chosen base directory.
+
+### Step 3: Gather Project Context
+
+Ask the user (skip if already provided via args):
 
 1. **Project name** — used in AGENTS.md header
 2. **One-liner description** — what the project does
-3. **Stack** (optional) — language/framework (e.g., "TypeScript + Next.js", "Python + FastAPI", "Swift")
-4. **Primary domains** (optional) — initial domain areas for ARCHITECTURE.md (e.g., "Auth, API, Dashboard")
+3. **Stack** (optional) — language/framework
+4. **Primary domains** (optional) — initial areas for ARCHITECTURE.md
 
-If the user declines details, use placeholders — the scaffold is useful even without customization.
+If the user declines, use placeholders.
 
-### Step 3: Create Directory Structure
+### Step 4: Run Bootstrap Script
 
+Execute the bootstrap shell script which handles all file creation:
+
+```bash
+bash .claude/skills/harness-engineering/scripts/bootstrap.sh \
+  --target "$(pwd)" \
+  --name "Project Name" \
+  --description "One-liner" \
+  --base-dir "docs" \
+  --stack "TypeScript" \
+  --domains "| Auth | src/auth/ | — | Authentication |"
 ```
-docs/
-├── design-docs/
-├── exec-plans/
-├── plans/
-│   └── complete/
-├── product-specs/
-├── references/
-├── generated/
-```
 
-Create `.gitkeep` in empty directories to ensure they're tracked by git.
+The script is idempotent — it skips existing files and reports what was created vs skipped.
 
-### Step 4: Generate Files
+**What the script creates:**
 
-Generate the following files using the templates in `assets/templates/`. Customize with project name, description, stack, and domains gathered in Step 2.
+Root files:
+- `AGENTS.md` — table of contents (~70 lines, all paths reference chosen base dir)
+- `CLAUDE.md` — repo-level Claude instructions
+- `ARCHITECTURE.md` — domain map template
 
-| File | Template | Purpose |
-|------|----------|---------|
-| `AGENTS.md` | `assets/templates/AGENTS.md.tmpl` | Table of contents (~70-100 lines) |
-| `CLAUDE.md` | `assets/templates/CLAUDE.md.tmpl` | Repo-level Claude instructions |
-| `ARCHITECTURE.md` | `assets/templates/ARCHITECTURE.md.tmpl` | Domain map |
-| `docs/design-docs/index.md` | `assets/templates/design-docs-index.md.tmpl` | Design doc catalog |
-| `docs/design-docs/core-beliefs.md` | `assets/templates/core-beliefs.md.tmpl` | Agent-first principles |
-| `docs/product-specs/index.md` | `assets/templates/product-specs-index.md.tmpl` | Product spec catalog |
-| `docs/golden-principles.md` | `assets/templates/golden-principles.md.tmpl` | Mechanical rules |
-| `docs/quality-score.md` | `assets/templates/quality-score.md.tmpl` | Quality grading rubric |
-| `docs/tech-debt-tracker.md` | `assets/templates/tech-debt-tracker.md.tmpl` | Tech debt register |
-| `docs/DESIGN.md` | `assets/templates/DESIGN.md.tmpl` | Design system |
-| `docs/PLANS.md` | `assets/templates/PLANS.md.tmpl` | Plans index |
-| `docs/PRODUCT_SENSE.md` | `assets/templates/PRODUCT_SENSE.md.tmpl` | Product context |
-| `docs/RELIABILITY.md` | `assets/templates/RELIABILITY.md.tmpl` | Reliability requirements |
-| `docs/SECURITY.md` | `assets/templates/SECURITY.md.tmpl` | Security guidelines |
+Knowledge base (under `<base-dir>/`):
+- `design-docs/index.md` + `design-docs/core-beliefs.md`
+- `product-specs/index.md`
+- `golden-principles.md` — mechanical rules
+- `quality-score.md` — grading rubric (A-F)
+- `tech-debt-tracker.md` — debt register
+- `DESIGN.md`, `PLANS.md`, `PRODUCT_SENSE.md`, `RELIABILITY.md`, `SECURITY.md`
+- `.gitkeep` in: `exec-plans/`, `plans/`, `plans/complete/`, `product-specs/`, `references/`, `generated/`
 
-### Step 5: Git Setup
+Claude config:
+- `.claude/settings.json` — with `planDirectory` set to `<base-dir>/plans`
 
-If not already a git repo:
-1. `git init`
-2. Rename branch to `main`
-3. Stage all generated files
-4. Commit: `chore: bootstrap agent-first knowledge base`
+### Step 5: Git Operations
 
-If already a git repo:
-1. Stage new files only
-2. Commit: `chore: add agent-first knowledge base scaffold`
+**New repo:**
+1. `git init` + rename branch to `main`
+2. Stage all generated files
+3. Commit: `chore: bootstrap agent-first knowledge base`
+
+**Existing repo:**
+1. Create branch: `chore/add-knowledge-base`
+2. Stage new files only
+3. Commit: `chore: add agent-first knowledge base scaffold`
+4. Optionally open PR if user wants
 
 ### Step 6: Report
 
-Print a summary:
-- Files created (count)
-- Files skipped (already existed)
-- Next steps: customize ARCHITECTURE.md domains, fill PRODUCT_SENSE.md, add first plan to docs/plans/
+Print summary:
+- Files created vs skipped
+- Base directory used
+- Next steps: customize ARCHITECTURE.md, fill PRODUCT_SENSE.md, create first plan
 
 ## Key Principles Encoded
 
-The templates encode these agent-first principles:
+The generated templates encode these agent-first principles:
 
 1. **AGENTS.md is a table of contents** — short, maps questions to docs
 2. **Knowledge is mechanically discoverable** — structured, not tribal
@@ -114,8 +125,32 @@ The templates encode these agent-first principles:
 9. **Tests prove behavior** — not implementation
 10. **Docs ship with code** — same commit
 
+## Agent Capabilities (Post-Bootstrap)
+
+After bootstrapping, the following capabilities enhance agent-first development. These reference existing tools — install as needed:
+
+### Browser Validation
+Drive the app with Chrome DevTools for visual QA. Use `agent-browser` (headless) or `playwriter` (user's Chrome). Enables: screenshot validation, DOM inspection, user flow testing.
+
+### Doc Gardening
+Recurring scan for stale docs that don't match code behavior. Pattern: agent reads code → compares to docs → opens fix-up PRs for drift.
+
+### Quality Sweeps
+Background task scanning for golden principle violations. Updates quality scores in `<base-dir>/quality-score.md`. Opens targeted refactoring PRs.
+
+### Plan Lifecycle
+Manage plans as first-class artifacts:
+- Create in `<base-dir>/plans/`
+- Track status in `<base-dir>/PLANS.md`
+- Move to `<base-dir>/plans/complete/` when done
+
 ## Resources
 
-### assets/templates/
+### scripts/bootstrap.sh
+Shell script that creates the full directory structure and generates all files from templates. Accepts `--target`, `--name`, `--description`, `--base-dir`, `--stack`, `--domains` flags. Idempotent.
 
-Template files for all generated docs. Each template includes placeholder markers (`<!-- TODO -->`) for project-specific customization. Read these templates when generating files — substitute `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`, `{{STACK}}`, and `{{DOMAINS}}` with values from Step 2.
+### assets/templates/
+14 template files with `{{PLACEHOLDER}}` markers: `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`, `{{BASE_DIR}}`, `{{STACK}}`, `{{DOMAINS}}`, `{{DATE}}`. The bootstrap script handles substitution.
+
+### references/
+- `harness-engineering-article.md` — key insights extracted from the source article
