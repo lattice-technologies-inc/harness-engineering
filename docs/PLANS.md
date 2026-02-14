@@ -12,7 +12,8 @@ Active and completed plans for the project.
 
 | Plan | Created | Status | Summary |
 |------|---------|--------|---------|
-| — | — | — | No active plans |
+| [harness-skill-v2](plans/harness-skill-v2.md) | 2026-02-13 | In Progress | Enhance harness-init with onboarding/audit + enforcement scaffolding |
+| [harness-onboard-existing-2026-02-13](plans/harness-onboard-existing-2026-02-13.md) | 2026-02-13 | In Progress | Generated onboarding plan for this repo's Phase 0 standards |
 
 ## Completed Plans
 

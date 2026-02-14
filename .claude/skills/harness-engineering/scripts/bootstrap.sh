@@ -95,6 +95,7 @@ dirs=(
   "${BASE_DIR}/product-specs"
   "${BASE_DIR}/references"
   "${BASE_DIR}/generated"
+  "scripts/harness"
 )
 for d in "${dirs[@]}"; do
   full="${TARGET_DIR}/${d}"
@@ -142,6 +143,9 @@ create_from_template "$TEMPLATE_DIR/PLANS.md.tmpl"               "${TARGET_DIR}/
 create_from_template "$TEMPLATE_DIR/PRODUCT_SENSE.md.tmpl"       "${TARGET_DIR}/${BASE_DIR}/PRODUCT_SENSE.md"
 create_from_template "$TEMPLATE_DIR/RELIABILITY.md.tmpl"         "${TARGET_DIR}/${BASE_DIR}/RELIABILITY.md"
 create_from_template "$TEMPLATE_DIR/SECURITY.md.tmpl"            "${TARGET_DIR}/${BASE_DIR}/SECURITY.md"
+create_from_template "$TEMPLATE_DIR/scripts-harness-knowledge-check.sh.tmpl" "${TARGET_DIR}/scripts/harness/knowledge-check.sh"
+
+chmod +x "${TARGET_DIR}/scripts/harness/knowledge-check.sh" 2>/dev/null || true
 
 # --- Claude settings ---
 echo ""

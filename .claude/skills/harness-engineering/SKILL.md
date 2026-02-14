@@ -17,6 +17,33 @@ Based on the system that produced ~1M LOC across 1,500 PRs with zero manually-wr
 - Adding structured knowledge scaffolding to an existing repo
 - User invokes `/harness-init`
 
+## Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  HARNESS ENGINEERING FLOW                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  /harness-init          Bootstrap scaffolding               │
+│       ↓                 (AGENTS.md, docs/, templates)       │
+│                                                             │
+│  /harness-standards     Fill Phase 0: Standards             │
+│       ↓                 (analyze repo → confirm → fill)     │
+│                                                             │
+│  /harness-onboard       Existing repo gap-fill              │
+│       ↓                 (audit → onboarding plan)           │
+│                                                             │
+│  /harness-eslint        Optional: mechanical enforcement    │
+│                         (ESLint rules for JS/TS repos)      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+Typical sequence:
+  New repo:      /harness-init → /harness-standards
+  Existing repo: /harness-init → /harness-onboard → /harness-standards
+  JS/TS repo:    ... → /harness-eslint (optional add-on)
+```
+
 ## Workflow
 
 ### Step 1: Detect Repo State
@@ -26,9 +53,12 @@ Determine whether the target is a new or existing repository:
 ```
 Check:
 1. Does .git/ exist? → existing repo
-2. Does AGENTS.md exist? → already bootstrapped (report + exit unless --force)
+2. Does AGENTS.md exist? → likely already bootstrapped (prefer audit + gap-fill)
 3. Does the default docs/ directory have existing content? → potential conflict
 ```
+
+Notes:
+- The bootstrap script is idempotent and will skip existing files. If the repo is already bootstrapped, prefer running the **existing repo onboarding audit** (Step 6) instead of re-running bootstrap.
 
 ### Step 2: Choose Base Directory
 
@@ -87,6 +117,9 @@ Knowledge base (under `<base-dir>/`):
 - `DESIGN.md`, `PLANS.md`, `PRODUCT_SENSE.md`, `RELIABILITY.md`, `SECURITY.md`
 - `.gitkeep` in: `exec-plans/`, `plans/`, `plans/complete/`, `product-specs/`, `references/`, `generated/`
 
+Repo checks (root):
+- `scripts/harness/knowledge-check.sh` — minimal mechanical checks to keep the knowledge base legible to agents (wire into CI when ready)
+
 Claude config:
 - `.claude/settings.json` — with `planDirectory` set to `<base-dir>/plans`
 
@@ -103,12 +136,61 @@ Claude config:
 3. Commit: `chore: add agent-first knowledge base scaffold`
 4. Optionally open PR if user wants
 
-### Step 6: Report
+### Step 6: Existing Repo Onboarding Audit (Gap Fill)
+
+For existing repositories, the hard part isn’t creating empty scaffolding. It’s filling the **Phase 0: Standards** gaps using the repo’s real context (code, README, CI, existing conventions), and producing a short execution plan so agents don’t drift.
+
+Run the audit script to generate a concrete onboarding plan:
+
+```bash
+bash .claude/skills/harness-engineering/scripts/audit.sh --target "$(pwd)" --write-plan
+```
+
+The audit will:
+- Infer the knowledge base base dir from `.claude/settings.json` when possible
+- Detect stack signals (JS/TS, Python, Ruby, Go, Rust, etc.)
+- Suggest candidate domains by scanning common directory roots (`src/`, `apps/`, `packages/`, etc.)
+- Write a plan to `<base-dir>/plans/harness-onboard-existing-YYYY-MM-DD.md`
+
+### Optional: Mechanical Enforcement Add-On (Agent-Directed Linters)
+
+The source article emphasizes enforcing invariants via custom linters and structural tests with **agent-readable remediation**.
+
+This skill ships a minimal, stack-agnostic enforcement loop:
+
+```bash
+bash scripts/harness/knowledge-check.sh
+```
+
+When the repo is JS/TS-heavy and ESLint is already in play, consider:
+- Adding custom ESLint rules for your project conventions (best)
+- Or using an external rule set for inspiration (e.g. `@factory/eslint-plugin`) and adapting it
+
+The right outcome is not “more rules.” It’s “rules that eliminate whole classes of agent mistakes.”
+
+This template includes a small, repo-local ESLint plugin skeleton you can copy into a JS/TS repo:
+
+```bash
+bash .claude/skills/harness-engineering/scripts/add-eslint-agent-lints.sh --target "$(pwd)" --install
+```
+
+It creates:
+- `tools/eslint-plugin-harness/` (tiny plugin with agent-readable messages)
+- `eslint.config.cjs`
+- `package.json` `lint` script (if missing)
+
+If the repo already has a stack and package manager, ask the user one tight question:
+- "Do you want to add mechanical enforcement now?"
+  - "No, not yet" (keep only `scripts/harness/knowledge-check.sh`)
+  - "Yes, minimal" (wire `scripts/harness/knowledge-check.sh` into CI)
+  - "Yes, stack-specific" (add JS/TS ESLint or Python ruff, etc., plus CI)
+
+### Step 7: Report
 
 Print summary:
 - Files created vs skipped
 - Base directory used
-- Next steps: customize ARCHITECTURE.md, fill PRODUCT_SENSE.md, create first plan
+- Next steps: run the existing-repo audit (if relevant), customize ARCHITECTURE.md, fill PRODUCT_SENSE.md, create first plan
 
 ## Key Principles Encoded
 
