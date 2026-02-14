@@ -1,17 +1,3 @@
 # Claude Code — Repo Instructions
 
-## Primary Knowledge Base
-
-**Read [AGENTS.md](AGENTS.md) before any task.** It is the table of contents for all project knowledge.
-
-## Enforced Behaviors
-
-1. **Read AGENTS.md first.** Before coding, planning, or reviewing — read AGENTS.md and follow its pointers.
-2. **Update docs/ when code changes.** If behavior changes, docs must change in the same PR.
-3. **Create plans before multi-step work.** Plans live in `docs/plans/`. No multi-file changes without a plan.
-4. **Move completed plans.** When a plan is fully implemented, move it to `docs/plans/complete/`.
-5. **No tribal knowledge.** If it was discussed in Slack, a meeting, or a conversation — encode it into `docs/`. The repo is the single source of truth.
-6. **Quality score must not regress.** Check `docs/quality-score.md` after changes.
-7. **Track tech debt.** New debt gets logged in `docs/tech-debt-tracker.md`.
-8. **Conventional Commits.** Use `feat|fix|refactor|build|ci|chore|docs|style|perf|test` prefixes.
-9. **Files < 500 LOC.** Split large files proactively.
+**Read [AGENTS.md](AGENTS.md) before any task.** It contains all project knowledge, conventions, and workflow rules. Follow its pointers.
