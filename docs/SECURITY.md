@@ -4,20 +4,20 @@
 
 ## Threat Model
 
-<!-- What are we protecting? From whom? -->
+[Fill per project — what are we protecting? From whom?]
 
 ## Authentication & Authorization
 
-<!-- Auth strategy, token management, RBAC. -->
+[Fill per project — auth strategy, token management, RBAC.]
 
 ## Data Protection
 
-<!-- Encryption at rest/transit, PII handling, data retention. -->
+[Fill per project — encryption at rest/transit, PII handling, data retention.]
 
 ## Dependencies
 
-<!-- Dependency audit process, vulnerability scanning. -->
+[Fill per project — dependency audit process, vulnerability scanning.]
 
 ## Incident Response
 
-<!-- Security incident procedures, disclosure policy. -->
+[Fill per project — security incident procedures, disclosure policy.]

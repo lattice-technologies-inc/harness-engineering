@@ -27,3 +27,7 @@ Mechanical rules that apply universally across the project. Non-negotiable.
 - **Tech debt gets tracked.** New debt → entry in `docs/tech-debt-tracker.md`.
 - **No TODOs without tracking.** If you write `TODO`, add a corresponding entry in the tech debt tracker.
 - **Code review is mandatory.** No merging without review (human or agent).
+
+## Project-Specific
+
+[Customize per project — add rules specific to your stack, domain, or team conventions here.]

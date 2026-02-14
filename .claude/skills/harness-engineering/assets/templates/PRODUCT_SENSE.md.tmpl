@@ -4,12 +4,12 @@
 
 ## Users
 
-<!-- Who uses this? What are their goals? -->
+[Fill per project — who uses this? What are their goals?]
 
 ## Key Workflows
 
-<!-- Primary user flows and their importance. -->
+[Fill per project — primary user flows and their importance.]
 
 ## Product Principles
 
-<!-- What matters most? Speed? Accuracy? Simplicity? -->
+[Fill per project — what matters most? Speed? Accuracy? Simplicity?]
