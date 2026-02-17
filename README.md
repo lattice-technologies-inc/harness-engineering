@@ -33,14 +33,14 @@ Built on the methodology behind ~1M LOC across 1,500 PRs with zero manually-writ
 Inside Claude Code:
 
 ```
-/plugin marketplace add hbruceweaver/harness-engineering
+/plugin marketplace add lattice-technologies-inc/harness-engineering
 /plugin install harness-engineering@harness-engineering-marketplace
 ```
 
 ### From a local clone
 
 ```bash
-git clone https://github.com/hbruceweaver/harness-engineering.git
+git clone https://github.com/lattice-technologies-inc/harness-engineering.git
 cd harness-engineering
 
 # Load for a single session
