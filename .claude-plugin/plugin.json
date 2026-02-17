@@ -1,0 +1,31 @@
+{
+  "name": "harness-engineering",
+  "version": "1.0.0",
+  "description": "Agent-first development toolkit. 5 skills, 8 commands, 4 hooks, 1 MCP server. Bootstrap knowledge bases, shape requirements, breadboard systems, browser automation, and enforce standards.",
+  "author": {
+    "name": "Bruce Weaver",
+    "url": "https://github.com/hbruceweaver"
+  },
+  "homepage": "https://github.com/hbruceweaver/HyperClaw",
+  "repository": "https://github.com/hbruceweaver/HyperClaw",
+  "license": "MIT",
+  "keywords": [
+    "harness-engineering",
+    "agent-first",
+    "knowledge-base",
+    "shaping",
+    "breadboarding",
+    "git-worktree",
+    "bootstrap",
+    "eslint",
+    "shape-up",
+    "playwright-cli",
+    "browser-automation"
+  ],
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}

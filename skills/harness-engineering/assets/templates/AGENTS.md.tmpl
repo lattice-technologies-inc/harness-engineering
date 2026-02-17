@@ -1,0 +1,89 @@
+# {{PROJECT_NAME}}
+
+> {{DESCRIPTION}}
+
+---
+
+## Where to Look
+
+| Question | Go to |
+|----------|-------|
+| Architecture / domain map | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Design decisions & rationale | [{{BASE_DIR}}/design-docs/]({{BASE_DIR}}/design-docs/index.md) |
+| Draft plans | [{{BASE_DIR}}/plans/]({{BASE_DIR}}/plans/) |
+| In-progress plans | [{{BASE_DIR}}/plans/in-progress/]({{BASE_DIR}}/plans/in-progress/) |
+| Completed plans | [{{BASE_DIR}}/plans/complete/]({{BASE_DIR}}/plans/complete/) |
+| Plan details (supporting docs) | [{{BASE_DIR}}/plan-details/]({{BASE_DIR}}/plan-details/) |
+| Plans index | [{{BASE_DIR}}/PLANS.md]({{BASE_DIR}}/PLANS.md) |
+| Product specs & requirements | [{{BASE_DIR}}/product-specs/]({{BASE_DIR}}/product-specs/index.md) |
+| Product sense & user context | [{{BASE_DIR}}/PRODUCT_SENSE.md]({{BASE_DIR}}/PRODUCT_SENSE.md) |
+| Design system & patterns | [{{BASE_DIR}}/DESIGN.md]({{BASE_DIR}}/DESIGN.md) |
+| Golden principles (mechanical rules) | [{{BASE_DIR}}/golden-principles.md]({{BASE_DIR}}/golden-principles.md) |
+| Quality scores per domain | [{{BASE_DIR}}/quality-score.md]({{BASE_DIR}}/quality-score.md) |
+| Tech debt register | [{{BASE_DIR}}/tech-debt-tracker.md]({{BASE_DIR}}/tech-debt-tracker.md) |
+| Reliability requirements | [{{BASE_DIR}}/RELIABILITY.md]({{BASE_DIR}}/RELIABILITY.md) |
+| Security guidelines | [{{BASE_DIR}}/SECURITY.md]({{BASE_DIR}}/SECURITY.md) |
+| External references & llms.txt | [{{BASE_DIR}}/references/]({{BASE_DIR}}/references/) |
+| Auto-generated docs | [{{BASE_DIR}}/generated/]({{BASE_DIR}}/generated/) |
+| Core beliefs (agent-first principles) | [{{BASE_DIR}}/design-docs/core-beliefs.md]({{BASE_DIR}}/design-docs/core-beliefs.md) |
+
+---
+
+## How to Work
+
+### Before Coding
+
+1. **Read docs first.** Start with this file, then follow pointers relevant to your task.
+2. **Check plans.** Look in `{{BASE_DIR}}/plans/in-progress/` for active work and `{{BASE_DIR}}/plans/` for drafts. Don't duplicate work. If a plan has a details directory, read `scratchpad.md` first for prior learnings.
+3. **Check tech debt.** Consult `{{BASE_DIR}}/tech-debt-tracker.md` — your change might address (or worsen) known debt.
+
+### Planning
+
+4. **Plans are always single files.** Every plan is one `.md` file: `{{BASE_DIR}}/plans/<slug>-YYYY-MM-DD.md`. This file moves through the pipeline.
+5. **Plan details for deep work.** When a plan needs supporting documents (shaping, breadboarding, spikes, slice plans), create a details directory that the plan file links to:
+   ```
+   {{BASE_DIR}}/plan-details/<slug>/    # permanent — never moves
+     scratchpad.md      # working notes — learnings, failures, discoveries (always created)
+     frame.md           # the "why" — problem definition, appetite, constraints
+     shaping.md         # requirements (R), shapes (S), fit checks
+     slices.md          # breadboard tables + vertical slices
+     spike-<topic>.md   # investigation of unknowns
+     V1-plan.md         # slice implementation plan
+   ```
+   The plan file in `{{BASE_DIR}}/plans/` links to its details directory. Details stay put; only the plan file moves.
+6. **Scratchpad.** Every plan-details directory gets a `scratchpad.md`. Use it to record:
+   - Things that failed and why
+   - Discoveries made during implementation
+   - Workarounds and their reasoning
+   - Context that would help a future session pick up where you left off
+
+   This is optional but encouraged — write to it whenever you learn something worth preserving.
+7. **Plan lifecycle.** Plans move through a three-stage pipeline:
+   - `{{BASE_DIR}}/plans/` — draft (not yet started)
+   - `{{BASE_DIR}}/plans/in-progress/` — actively being executed
+   - `{{BASE_DIR}}/plans/complete/` — fully implemented
+
+### Building
+
+8. **Validate at boundaries, trust internals.** Don't over-validate between trusted components.
+9. **Keep files < 500 LOC.** Split and refactor as needed.
+10. **Prefer shared utilities** over hand-rolled helpers.
+11. **Structured logging only.** No `console.log` debugging in committed code.
+12. **Tests prove behavior.** Write tests that demonstrate correctness, not implementation.
+
+### After Coding
+
+13. **Update docs when behavior changes.** No shipping without doc updates.
+14. **Quality score must not regress.** Check `{{BASE_DIR}}/quality-score.md`.
+15. **Track new tech debt.** If you introduce debt knowingly, add it to the tracker.
+16. **No knowledge lives outside the repo.** Encode Slack conversations, meeting notes, and verbal decisions into `{{BASE_DIR}}/`.
+
+---
+
+## Quick Reference
+
+- **Conventional Commits**: `feat|fix|refactor|build|ci|chore|docs|style|perf|test`
+- **File limit**: ~500 LOC
+- **Plans pipeline**: `{{BASE_DIR}}/plans/` (draft) → `in-progress/` (executing) → `complete/` (done)
+- **Design docs**: `{{BASE_DIR}}/design-docs/`
+- **Product specs**: `{{BASE_DIR}}/product-specs/`

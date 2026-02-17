@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/lint-on-save.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/shaping-ripple.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/plan-capture.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if this session involved creating or editing plan files (in docs/plans/ or any subdirectory) or plan detail files (in docs/plan-details/). If no plan work was done, approve the stop. If plan work was done, verify: (1) Every plan has a single .md file in the plans pipeline — either docs/plans/ (draft), docs/plans/in-progress/ (executing), or docs/plans/complete/ (done). (2) Plans actively being worked on should be in docs/plans/in-progress/, not still in the draft root. (3) Plans that are finished should be in docs/plans/complete/. If any plan appears to be in the wrong pipeline stage, block the stop and remind the agent to move it. Otherwise approve.",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
