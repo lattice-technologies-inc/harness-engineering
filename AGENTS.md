@@ -1,4 +1,4 @@
-# HyperClaw
+# harness-engineering
 
 > [One-liner description — fill per project]
 

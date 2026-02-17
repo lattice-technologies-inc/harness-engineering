@@ -4,10 +4,11 @@
   "description": "Agent-first development toolkit. 5 skills, 8 commands, 4 hooks, 1 MCP server. Bootstrap knowledge bases, shape requirements, breadboard systems, browser automation, and enforce standards.",
   "author": {
     "name": "Bruce Weaver",
+    "email": "hbw@lattice.sh",
     "url": "https://github.com/hbruceweaver"
   },
-  "homepage": "https://github.com/hbruceweaver/HyperClaw",
-  "repository": "https://github.com/hbruceweaver/HyperClaw",
+  "homepage": "https://github.com/hbruceweaver/harness-engineering",
+  "repository": "https://github.com/hbruceweaver/harness-engineering",
   "license": "MIT",
   "keywords": [
     "harness-engineering",

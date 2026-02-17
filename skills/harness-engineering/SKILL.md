@@ -124,12 +124,14 @@ Repo checks (root):
 
 Slash commands:
 - `.claude/commands/harness-init.md` — bootstrap entry point
+- `.claude/commands/harness-shape.md` — fill knowledge base with real project context
 - `.claude/commands/harness-onboard.md` — existing repo audit + gap-fill plan
-- `.claude/commands/harness-standards.md` — fill Phase 0 standards
+- `.claude/commands/harness-standards.md` — alias for harness-shape (original name)
 - `.claude/commands/harness-eslint.md` — optional ESLint enforcement
 
 Hooks:
 - `.claude/hooks/lint-on-save.sh` — immediate lint feedback on Edit/Write (ESLint, ruff, shellcheck)
+- `.claude/hooks/shaping-ripple.sh` — PostToolUse on Edit/Write. Detects edits to `shaping: true` files and reminds agent to check cross-level consistency
 - Plan-capture — PostToolUse on ExitPlanMode. Reminds agent to symlink approved plan into `docs/plans/` with proper `<slug>-YYYY-MM-DD.md` name
 - Plan-pipeline — prompt-based Stop hook. Fires at end of turn to verify plans are in the correct pipeline stage
 
@@ -313,5 +315,4 @@ This skill is fully self-contained. Everything needed to bootstrap a repo lives 
 6-rule ESLint plugin with agent-readable error messages. Deployed to `tools/eslint-plugin-harness/` via `/harness-eslint`.
 
 ### references/
-- `harness-engineering-article.md` — key insights from the OpenAI harness engineering article
-- `agent-directed-enforcement.md` — lint categories, Factory article insights, lint development cycle
+- `harness-engineering-article.md` — key insights from the OpenAI harness engineering article (includes lint categories, enforcement patterns, and development cycle)

@@ -2,7 +2,7 @@
 
 # Git Worktree Manager
 # Handles creating, listing, switching, and cleaning up Git worktrees
-# Based on compound-engineering/git-worktree, adapted for HyperClaw
+# Based on compound-engineering/git-worktree
 
 set -e
 
@@ -293,7 +293,7 @@ cleanup_worktrees() {
 
 show_help() {
   cat << EOF
-Git Worktree Manager (HyperClaw)
+Git Worktree Manager
 
 Usage: worktree-manager.sh <command> [options]
 

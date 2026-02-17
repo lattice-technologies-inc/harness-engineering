@@ -1,15 +1,15 @@
-# Plan: Convert HyperClaw Repo into a Claude Code Plugin
+# Plan: Convert harness-engineering Repo into a Claude Code Plugin
 
 ## Context
 
-The HyperClaw repo contains the harness-engineering skill, shaping skills, git-worktree skill, commands, and hooks — all currently scattered across `.claude/skills/`, `.claude/commands/`, `.claude/hooks/`, and `shaping-skills/`. We want to restructure it as a proper Claude Code plugin so it's installable via `/plugin install` and distributable via a marketplace.
+The harness-engineering repo contains the harness-engineering skill, shaping skills, git-worktree skill, commands, and hooks — all currently scattered across `.claude/skills/`, `.claude/commands/`, `.claude/hooks/`, and `shaping-skills/`. We want to restructure it as a proper Claude Code plugin so it's installable via `/plugin install` and distributable via a marketplace.
 
 **Reference implementation:** compound-engineering at `~/.claude/plugins/cache/every-marketplace/compound-engineering/2.34.0/`
 
 ## Target Structure
 
 ```
-HyperClaw/
+harness-engineering/
 ├── .claude-plugin/
 │   └── plugin.json                  # Manifest (name, version, mcpServers)
 ├── skills/                          # 5 skills

@@ -33,7 +33,7 @@ Droidz is a framework that operationalizes a set of slash commands and artifacts
 to keep AI development consistent. The part we borrow most directly is the idea of a
 "Phase 0: standards shaping" step after bootstrap.
 
-In HyperClaw, the analog is:
+In harness-engineering, the analog is:
 - `/harness-standards` to fill placeholders and encode guardrails
 - `/harness-onboard` to generate a gap-fill plan for existing repos
 
