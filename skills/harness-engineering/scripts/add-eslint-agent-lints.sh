@@ -48,7 +48,6 @@ if [[ -f "$ESLINT_CONFIG" ]]; then
   echo "SKIP: eslint.config.cjs already exists"
 else
   cat > "$ESLINT_CONFIG" <<'EOF'
-/* eslint-env node */
 const harness = require("./tools/eslint-plugin-harness");
 
 let tsParser = null;

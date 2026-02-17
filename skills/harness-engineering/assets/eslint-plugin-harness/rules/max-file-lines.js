@@ -41,7 +41,7 @@ module.exports = {
 
     return {
       "Program:exit"(program) {
-        const sourceCode = context.getSourceCode();
+        const sourceCode = context.sourceCode;
         const lines = sourceCode.lines;
 
         let count = 0;
