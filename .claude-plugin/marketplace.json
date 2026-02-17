@@ -1,10 +1,13 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "harness-engineering-marketplace",
   "description": "Agent-first development toolkit marketplace",
-  "version": "1.0.0",
   "owner": {
     "name": "Bruce Weaver",
     "email": "hbw@lattice.sh"
+  },
+  "metadata": {
+    "version": "1.0.0"
   },
   "plugins": [
     {
@@ -12,7 +15,12 @@
       "source": ".",
       "description": "Agent-first development toolkit. 5 skills, 8 commands, 4 hooks, 1 MCP server. Bootstrap knowledge bases, shape requirements, breadboard systems, browser automation, and enforce standards.",
       "version": "1.0.0",
-      "keywords": [
+      "author": {
+        "name": "Bruce Weaver",
+        "email": "hbw@lattice.sh"
+      },
+      "homepage": "https://github.com/lattice-technologies-inc/harness-engineering",
+      "tags": [
         "harness-engineering",
         "agent-first",
         "knowledge-base",
