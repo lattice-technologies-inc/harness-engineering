@@ -12,7 +12,7 @@
   "plugins": [
     {
       "name": "harness-engineering",
-      "source": ".",
+      "source": "./",
       "description": "Agent-first development toolkit. 5 skills, 8 commands, 4 hooks, 1 MCP server. Bootstrap knowledge bases, shape requirements, breadboard systems, browser automation, and enforce standards.",
       "version": "1.0.0",
       "author": {
